@@ -1,6 +1,6 @@
 {% set name = "nvidia-ml" %}
-{% set pypi_name = "nvidia-ml-py3" %}
-{% set version = "7.352.0" %}
+{% set pypi_name = "nvidia-ml-py" %}
+{% set version = "11.525.112" %}
 
 package:
   name: {{ name|lower }}
@@ -8,38 +8,43 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ pypi_name }}/{{ pypi_name }}-{{ version }}.tar.gz
-  sha256: 390f02919ee9d73fe63a98c73101061a6b37fa694a793abf56673320f1f51277
+  sha256: c64e473953b65ec0ccc76cf3601c3130a0ac8060bbcaea912cc00fa8e4c9868d
 
 build:
   noarch: python
   number: 0
-  script: "{{ PYTHON }} -m pip install . --no-deps -vv"
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
     - python
     - pip
+    - setuptools
+    - wheel
   run:
     - python
 
 test:
   imports:
     - pynvml
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
-  home: https://github.com/nicolargo/nvidia-ml-py3
+  home: https://www.nvidia.com
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
-  summary: 'Provides a Python interface to GPU management and monitoring functions.'
-
+  summary: Provides a Python interface to GPU management and monitoring functions.
   # The remaining entries in this section are optional, but recommended
   description: |
     This is a wrapper around the NVML library.
     For information about the NVML library, see the NVML developer page
     http://developer.nvidia.com/nvidia-management-library-nvml
-  doc_url: https://github.com/nicolargo/nvidia-ml-py3
-  dev_url: https://github.com/nicolargo/nvidia-ml-py3
+  dev_url: https://developer.nvidia.com/nvidia-management-library-nvml
+  doc_url: https://docs.nvidia.com/deploy/nvml-api/index.html
 
 extra:
   recipe-maintainers:
